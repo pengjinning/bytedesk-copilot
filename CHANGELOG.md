@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-08-21
+
+### Added
+
+- **GLM-5.3 model support**: 1M context window, 128K max output tokens, always-on thinking
+  - GLM-5.3 cannot disable thinking; the provider always sends `thinking.type: "enabled"` regardless of the `bytedesk-copilot.enableThinking` setting (the setting now only controls whether the thinking display is shown)
+  - New `reasoning_effort` request parameter (`low` / `high` / `max`), overridable per-request via model options
+  - New `bytedesk-copilot.reasoningEffort` setting: `"default"` (omit the parameter, server default is `max`), `"low"`, `"high"`, or `"max"`
+  - Temperature defaults to `1.0` for GLM-5.3 per official Z.ai recommendation (other models keep `0.7`)
+- Fork published under the `bytedesk-copilot` publisher to continue maintaining the extension after the upstream repository stopped updating
+
+### Changed
+
+- **Rebranded as `BytedeskCopilot`** (`bytedesk-copilot.bytedesk-copilot`) to distinguish from the original `ryosuke-asano.zai-vscode-chat`
+- **Independent internal identifiers** so this fork can be installed and enabled alongside the original extension without conflicts:
+  - Model provider vendor: `zai` → `bytedesk-copilot`
+  - Commands: `zai.manage`/`zai.welcome` → `bytedesk-copilot.manage`/`bytedesk-copilot.welcome`
+  - Configuration section: `zai.*` → `bytedesk-copilot.*`
+  - Vision tool: `zai_analyze_image` → `bytedesk-copilot_analyze_image`
+
 ## [0.10.0] - 2026-06-13
 
 ### Added

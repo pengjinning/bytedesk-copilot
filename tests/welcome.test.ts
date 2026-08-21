@@ -148,7 +148,7 @@ describe("showWelcomePanel", () => {
     );
   });
 
-  it("should call zai.manage and dispose panel when setApiKey is received", async () => {
+  it("should call bytedesk-copilot.manage and dispose panel when setApiKey is received", async () => {
     const context = createMockContext();
     const mockWebview = {
       html: "",
@@ -167,7 +167,9 @@ describe("showWelcomePanel", () => {
 
     await messageHandler({ command: "setApiKey" });
 
-    expect(vscode.commands.executeCommand).toHaveBeenCalledWith("zai.manage");
+    expect(vscode.commands.executeCommand).toHaveBeenCalledWith(
+      "bytedesk-copilot.manage"
+    );
     expect(mockPanel.dispose).toHaveBeenCalled();
   });
 });

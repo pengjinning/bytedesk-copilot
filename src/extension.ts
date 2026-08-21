@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
   const extVersion = (packageJson as { version?: string }).version ?? "unknown";
   const vscodeVersion = vscode.version;
   // Keep UA minimal: only extension version and VS Code version
-  const ua = `zai-vscode-chat/${extVersion} VSCode/${vscodeVersion}`;
+  const ua = `bytedesk-copilot/${extVersion} VSCode/${vscodeVersion}`;
 
   const provider = new ZaiChatModelProvider(context.secrets, ua);
   _provider = provider;
@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Register the Z.ai provider under the vendor id used in package.json
   const registration = vscode.lm.registerLanguageModelChatProvider(
-    "zai",
+    "bytedesk-copilot",
     provider
   );
   context.subscriptions.push(registration);
@@ -43,7 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Management command to configure API key
   context.subscriptions.push(
-    vscode.commands.registerCommand("zai.manage", async () => {
+    vscode.commands.registerCommand("bytedesk-copilot.manage", async () => {
       const existing = await context.secrets.get("zai.apiKey");
       const apiKey = await vscode.window.showInputBox({
         title: "Z.ai API Key",
@@ -86,7 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Command to manually reopen the welcome page
   context.subscriptions.push(
-    vscode.commands.registerCommand("zai.welcome", () => {
+    vscode.commands.registerCommand("bytedesk-copilot.welcome", () => {
       showWelcomePanel(context, extVersion);
     })
   );

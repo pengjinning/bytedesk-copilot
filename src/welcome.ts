@@ -21,7 +21,7 @@ export function showWelcomePanel(
   panel.webview.onDidReceiveMessage(
     async (message: { command: string }) => {
       if (message.command === "setApiKey") {
-        await vscode.commands.executeCommand("zai.manage");
+        await vscode.commands.executeCommand("bytedesk-copilot.manage");
         // Close the welcome panel after opening the key prompt
         panel.dispose();
       }
@@ -183,7 +183,7 @@ function getWelcomeHtml(extVersion: string): string {
   </div>
   <div class="step">
     <div class="step-number">2</div>
-    <div class="step-content">Run <code>Z.ai: Manage Z.ai Provider</code></div>
+    <div class="step-content">Run <code>BytedeskCopilot: Manage BytedeskCopilot Provider</code></div>
   </div>
   <div class="step">
     <div class="step-number">3</div>
@@ -200,8 +200,8 @@ function getWelcomeHtml(extVersion: string): string {
     <li>Open the Chat view (<code>Cmd/Ctrl + Alt + I</code>)</li>
     <li>Click the Pick Model button (<code>Cmd/Ctrl + Alt + .</code>)</li>
     <li>Open <strong>Manage Language Models</strong> menu (⚙️)</li>
-    <li>Click Z.ai models under <strong>Z.ai</strong> category to "Show in the chat model picker"</li>
-    <li>Choose a model (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5.1, GLM-5.2, GLM-5-Turbo, GLM-5V-Turbo, or GLM-5-Code)</li>
+    <li>Click BytedeskCopilot models under <strong>BytedeskCopilot</strong> category to "Show in the chat model picker"</li>
+    <li>Choose a model (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5-Turbo, GLM-5V-Turbo, or GLM-5-Code)</li>
   </ol>
 
   <div class="footer">

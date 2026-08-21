@@ -192,8 +192,21 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
    * Get the configuration setting for enabling thinking display.
    */
   private isThinkingEnabled(): boolean {
-    const config = vscode.workspace.getConfiguration("zai");
+    const config = vscode.workspace.getConfiguration("bytedesk-copilot");
     return config.get<boolean>("enableThinking", true);
+  }
+
+  /**
+   * Get the configured reasoning effort for models that support it
+   * (e.g. GLM-5.3). Returns undefined for "default", which omits the
+   * parameter so the server-side default applies.
+   */
+  private getReasoningEffort(): "low" | "high" | "max" | undefined {
+    const config = vscode.workspace.getConfiguration("bytedesk-copilot");
+    const value = config.get<string>("reasoningEffort", "default");
+    return value === "low" || value === "high" || value === "max"
+      ? value
+      : undefined;
   }
 
   /**
@@ -248,9 +261,9 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
         return {
           id: model.id,
           name: model.displayName,
-          detail: "Z.ai",
-          tooltip: `Z.ai ${model.name}`,
-          family: "zai",
+          detail: "BytedeskCopilot",
+          tooltip: `BytedeskCopilot ${model.name}`,
+          family: "bytedesk-copilot",
           version: "1.0.0",
           maxInputTokens: Math.max(
             1,
@@ -310,7 +323,7 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
 
   /**
    * Find the image analysis tool name from the available tools.
-   * Returns the tool name if `zai_analyze_image` is available, undefined otherwise.
+   * Returns the tool name if `bytedesk-copilot_analyze_image` is available, undefined otherwise.
    * When this tool is present, we prefer MCP-based image analysis over vision model switching.
    */
   private findImageAnalysisToolName(
@@ -319,7 +332,7 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
     if (!tools) {
       return undefined;
     }
-    const tool = tools.find((t) => t.name === "zai_analyze_image");
+    const tool = tools.find((t) => t.name === "bytedesk-copilot_analyze_image");
     return tool?.name;
   }
 
@@ -552,8 +565,14 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
       const mo = options.modelOptions as Record<string, Json> | undefined;
       const maxTokensVal =
         typeof mo?.max_tokens === "number" ? mo.max_tokens : DEFAULT_MAX_TOKENS;
+      // Models that cannot disable thinking (GLM-5.3) recommend temperature 1.0
+      // per the official Z.ai docs; other models keep the historical 0.7 default.
       const temperatureVal =
-        typeof mo?.temperature === "number" ? mo.temperature : 0.7;
+        typeof mo?.temperature === "number"
+          ? mo.temperature
+          : effectiveModelInfo?.alwaysThinking
+            ? 1.0
+            : 0.7;
       const effectiveMaxOutputTokens =
         effectiveModelInfo?.maxOutput ?? model.maxOutputTokens;
       const requestedMaxTokens = Math.min(
@@ -598,11 +617,27 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
         temperature: temperatureVal,
       };
 
-      // Enable thinking mode if setting is enabled
-      if (this.isThinkingEnabled()) {
+      // Enable thinking mode if the setting is enabled, or if the model
+      // cannot disable thinking (e.g. GLM-5.3 always thinks and rejects
+      // `thinking.type: "disabled"`).
+      const alwaysThinks = effectiveModelInfo?.alwaysThinking === true;
+      if (this.isThinkingEnabled() || alwaysThinks) {
         requestBody.thinking = {
           type: "enabled",
         };
+        // Reasoning effort levels (low / high / max) for models that support
+        // them. "default" omits the parameter so the server default applies.
+        if (effectiveModelInfo?.supportsReasoningEffort) {
+          const validEfforts = ["low", "high", "max"];
+          const moEffort = mo?.reasoning_effort;
+          const effort =
+            typeof moEffort === "string" && validEfforts.includes(moEffort)
+              ? (moEffort as "low" | "high" | "max")
+              : this.getReasoningEffort();
+          if (effort) {
+            requestBody.reasoning_effort = effort;
+          }
+        }
       }
 
       // Allow-list model options

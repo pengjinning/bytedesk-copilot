@@ -126,6 +126,17 @@ export interface ZaiModelInfo {
    * For example, `glm-5v-turbo` may be kept for internal vision fallback.
    */
   internal?: boolean;
+  /**
+   * When true, the model always thinks and cannot disable thinking.
+   * The API rejects `thinking.type: "disabled"` for such models (e.g. GLM-5.3),
+   * so we always send `thinking.type: "enabled"` regardless of user settings.
+   */
+  alwaysThinking?: boolean;
+  /**
+   * When true, the model supports the `reasoning_effort` request parameter
+   * (`low` / `high` / `max`).
+   */
+  supportsReasoningEffort?: boolean;
 }
 
 /**
@@ -139,6 +150,11 @@ export interface ZaiRequestBody {
   max_tokens?: number;
   temperature?: number;
   thinking?: { type: string };
+  /**
+   * Reasoning effort level for models that support it (e.g. GLM-5.3).
+   * `low` - lightweight reasoning; `high` - enhanced reasoning; `max` - deep reasoning.
+   */
+  reasoning_effort?: "low" | "high" | "max";
   stop?: string | string[];
   frequency_penalty?: number;
   presence_penalty?: number;
@@ -223,6 +239,20 @@ export const ZAI_MODELS: ZaiModelInfo[] = [
     maxOutput: 131072,
     supportsTools: true,
     supportsVision: false, // Text-only model
+  },
+  {
+    id: "glm-5.3",
+    name: "GLM-5.3",
+    displayName: "GLM-5.3",
+    // Z.ai docs: 1M context window, 128K max output tokens.
+    contextWindow: 1000000,
+    maxOutput: 131072,
+    supportsTools: true,
+    supportsVision: false, // Text-only model
+    // GLM-5.3 cannot disable thinking; `thinking.type` only accepts "enabled".
+    alwaysThinking: true,
+    // GLM-5.3 supports three reasoning effort levels: low / high / max.
+    supportsReasoningEffort: true,
   },
   {
     id: "glm-5-turbo",

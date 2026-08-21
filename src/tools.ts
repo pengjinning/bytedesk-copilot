@@ -9,7 +9,7 @@ export class ZaiAnalyzeImageTool implements vscode.LanguageModelTool<{
   image_data: string;
   prompt: string;
 }> {
-  static readonly id = "zai_analyze_image";
+  static readonly id = "bytedesk-copilot_analyze_image";
 
   readonly name = ZaiAnalyzeImageTool.id;
   readonly description =

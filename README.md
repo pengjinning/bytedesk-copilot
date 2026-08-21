@@ -1,4 +1,4 @@
-# Z.ai Chat Provider for VS Code
+# BytedeskCopilot — Z.ai Chat Provider (Fork)
 
 [![CI](https://github.com/Ryosuke-Asano/zai-provider-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/Ryosuke-Asano/zai-provider-extension/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -17,6 +17,7 @@ Integrates [Z.ai](https://z.ai) (智谱AI) models into VS Code Copilot Chat with
   - **GLM-5**: 200K context window, up to 128K output tokens
   - **GLM-5.1**: 200K context window, up to 128K output tokens
   - **GLM-5.2**: 1M context window, up to 128K output tokens
+  - **GLM-5.3**: 1M context window, up to 128K output tokens, always-on thinking with configurable reasoning effort (`low`/`high`/`max`)
   - **GLM-5-Turbo**: 200K context window, up to 128K output tokens
   - **GLM-5V-Turbo**: Multimodal coding model with vision support
   - **GLM-5-Code**: 200K context window, up to 131K output tokens, optimized for coding
@@ -31,14 +32,14 @@ Integrates [Z.ai](https://z.ai) (智谱AI) models into VS Code Copilot Chat with
 
 - **Secure API Key Management**
   - Stored securely in VS Code SecretStorage
-  - Managed via Command Palette (`Z.ai: Manage Z.ai Provider`)
+  - Managed via Command Palette (`BytedeskCopilot: Manage BytedeskCopilot Provider`)
 
 ## Installation
 
 ### From Marketplace (Coming Soon)
 
 ```bash
-code --install-extension Ryosuke-Asano.zai-vscode-chat
+code --install-extension bytedesk-copilot.bytedesk-copilot
 ```
 
 ### From Source
@@ -71,34 +72,35 @@ npm run package
 5. Install the `.vsix` file:
 
 ```bash
-code --install-extension zai-vscode-chat-*.vsix
+code --install-extension bytedesk-copilot-*.vsix
 ```
 
 ## Setup
 
 1. Open VS Code
 2. Open Command Palette (`Cmd/Ctrl + Shift + P`)
-3. Run `Z.ai: Manage Z.ai Provider`
+3. Run `BytedeskCopilot: Manage BytedeskCopilot Provider`
 4. Enter your Z.ai API key
 
 Get your API key from [Z.ai Platform](https://open.bigmodel.cn/).
 
 ## Usage
 
-Once configured, select Z.ai as your chat provider in VS Code Copilot Chat:
+Once configured, select BytedeskCopilot as your chat provider in VS Code Copilot Chat:
 
 - Open the Chat view (`Cmd/Ctrl + Alt + I`)
 - Click the Pick Model button (`Cmd/Ctrl + Alt + .`)
 - Open Manage Language Models menu (⚙️)
-- Click Z.ai models under `Z.ai` category to "Show in the chat model picker"
-- Choose a Z.ai model (GLM-4.5, GLM-4.6, GLM-4.7, GLM-4.7 Flash, GLM-5, GLM-5-Turbo, GLM-5.1, GLM-5.2, GLM-5V-Turbo, or GLM-5-Code)
+- Click BytedeskCopilot models under `BytedeskCopilot` category to "Show in the chat model picker"
+- Choose a Z.ai model (GLM-4.5, GLM-4.6, GLM-4.7, GLM-4.7 Flash, GLM-5, GLM-5-Turbo, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5V-Turbo, or GLM-5-Code)
   - Note: GLM-4.6V is used internally for image processing and is not selectable
 
 ### Configuration
 
-| Setting              | Type    | Default | Description                                                 |
-| -------------------- | ------- | ------- | ----------------------------------------------------------- |
-| `zai.enableThinking` | boolean | `true`  | Enable thinking/reasoning process display in chat responses |
+| Setting                | Type    | Default    | Description                                                                                                                    |
+| ---------------------- | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `bytedesk-copilot.enableThinking`  | boolean | `true`     | Enable thinking/reasoning process display in chat responses. GLM-5.3 always thinks server-side; disabling only hides the display |
+| `bytedesk-copilot.reasoningEffort` | string  | `"default"` | Reasoning effort for GLM-5.3: `"default"` (omit, server default `max`), `"low"`, `"high"`, or `"max"`                              |
 
 ## Supported Models
 
@@ -115,6 +117,7 @@ Once configured, select Z.ai as your chat provider in VS Code Copilot Chat:
 | GLM-5-Turbo   | 200,000        | 131,072    | No     | Yes   |
 | GLM-5.1       | 200,000        | 131,072    | No     | Yes   |
 | GLM-5.2       | 1,000,000      | 131,072    | No     | Yes   |
+| GLM-5.3       | 1,000,000      | 131,072    | No     | Yes   |
 | GLM-5V-Turbo  | 200,000        | 131,072    | Yes    | Yes   |
 | GLM-5-Code    | 200,000        | 131,000    | No     | Yes   |
 
@@ -183,13 +186,13 @@ If you don't see the ⚙️ **Manage Language Models** option in Copilot Chat, m
 
 If you see authentication errors:
 
-1. Run `Z.ai: Manage Z.ai Provider`
+1. Run `BytedeskCopilot: Manage BytedeskCopilot Provider`
 2. Verify your API key is correct
 3. Ensure your API key has active credits
 
 ### Vision Not Working
 
-For non-vision models (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5.1, GLM-5.2, GLM-5-Code):
+For non-vision models (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5-Code):
 
 - Images are automatically converted to text descriptions using GLM-OCR MCP
 - If GLM-OCR fails, the extension internally uses GLM-4.6V for image analysis
