@@ -255,6 +255,19 @@ export const ZAI_MODELS: ZaiModelInfo[] = [
     supportsReasoningEffort: true,
   },
   {
+    id: "glm-5.3-flash",
+    name: "GLM-5.3-Flash",
+    displayName: "GLM-5.3-Flash",
+    // Z.ai docs: 1M context window, 128K max output tokens.
+    contextWindow: 1000000,
+    maxOutput: 131072,
+    supportsTools: true,
+    supportsVision: true,
+    // GLM-5.3-Flash cannot disable thinking and supports reasoning effort.
+    alwaysThinking: true,
+    supportsReasoningEffort: true,
+  },
+  {
     id: "glm-5-turbo",
     name: "GLM-5-Turbo",
     displayName: "GLM-5-Turbo",

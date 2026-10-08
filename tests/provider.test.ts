@@ -51,6 +51,24 @@ describe("ZaiChatModelProvider", () => {
     expect(glm47?.maxOutputTokens).toBe(65535);
   });
 
+  it("should expose GLM-5.3-Flash with its context, output, and vision support", async () => {
+    const provider = new ZaiChatModelProvider(
+      secrets as unknown as vscode.SecretStorage,
+      "jest-agent"
+    );
+    const models = await provider.provideLanguageModelChatInformation(
+      { silent: true } as vscode.PrepareLanguageModelChatModelOptions,
+      createToken()
+    );
+    const glm53Flash = models.find((m) => m.id === "glm-5.3-flash");
+
+    expect(glm53Flash).toBeDefined();
+    expect(glm53Flash?.maxInputTokens).toBe(1000000 - 65536);
+    expect(glm53Flash?.maxOutputTokens).toBe(131072);
+    expect(glm53Flash?.capabilities.imageInput).toBe(true);
+    expect(glm53Flash?.capabilities.toolCalling).toBeTruthy();
+  });
+
   it("should allow prompts larger than the old reserved-output cap", async () => {
     const provider = new ZaiChatModelProvider(
       secrets as unknown as vscode.SecretStorage,

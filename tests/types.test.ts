@@ -403,6 +403,19 @@ describe("ZAI_MODELS", () => {
     expect(model?.maxOutput).toBe(131072);
   });
 
+  it("should have GLM-5.3-Flash model", () => {
+    const model = ZAI_MODELS.find((m) => m.id === "glm-5.3-flash");
+    expect(model).toBeDefined();
+    expect(model?.name).toBe("GLM-5.3-Flash");
+    expect(model?.displayName).toBe("GLM-5.3-Flash");
+    expect(model?.supportsTools).toBe(true);
+    expect(model?.supportsVision).toBe(true);
+    expect(model?.contextWindow).toBe(1000000);
+    expect(model?.maxOutput).toBe(131072);
+    expect(model?.alwaysThinking).toBe(true);
+    expect(model?.supportsReasoningEffort).toBe(true);
+  });
+
   it("should all models have required fields", () => {
     ZAI_MODELS.forEach((model) => {
       expect(model.id).toBeDefined();

@@ -1,13 +1,13 @@
 {
   "name": "bytedesk-copilot",
   "displayName": "BytedeskCopilot",
-  "description": "Integrates Z.ai models (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5-Turbo, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5V-Turbo, GLM-5-Code) into VS Code Copilot Chat with vision support and thinking process display",
-  "version": "0.11.0",
+  "description": "Integrates Z.ai models (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5-Turbo, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5.3-Flash, GLM-5V-Turbo, GLM-5-Code) into VS Code Copilot Chat with vision support and thinking process display",
+  "version": "0.12.0",
   "publisher": "bytedesk-copilot",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ryosuke-Asano/zai-provider-extension"
+    "url": "https://github.com/pengjinning/bytedesk-copilot"
   },
   "engines": {
     "vscode": "^1.104.0"
@@ -62,7 +62,7 @@
         "bytedesk-copilot.enableThinking": {
           "type": "boolean",
           "default": true,
-          "description": "Enable thinking/reasoning process display in chat responses. When disabled, the model's reasoning will not be shown. Note: GLM-5.3 always thinks server-side; disabling this setting only hides the thinking display."
+          "description": "Enable thinking/reasoning process display in chat responses. When disabled, the model's reasoning will not be shown. Note: GLM-5.3 and GLM-5.3-Flash always think server-side; disabling this setting only hides the thinking display."
         },
         "bytedesk-copilot.reasoningEffort": {
           "type": "string",
@@ -74,7 +74,7 @@
             "Enhanced reasoning",
             "Deep reasoning (recommended for coding)"
           ],
-          "description": "Reasoning effort for models that support reasoning levels (GLM-5.3). 'default' omits the parameter so the server default (max) applies. Ignored by models without reasoning effort support."
+          "description": "Reasoning effort for models that support reasoning levels (GLM-5.3 and GLM-5.3-Flash). 'default' omits the parameter so the server default (max) applies. Ignored by models without reasoning effort support."
         }
       }
     }

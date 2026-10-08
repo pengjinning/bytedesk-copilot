@@ -158,7 +158,7 @@ function getWelcomeHtml(extVersion: string): string {
 </head>
 <body>
 
-  <h1>Z.ai Chat Provider <span class="badge">v${extVersion}</span></h1>
+  <h1>BytedeskCopilot <span class="badge">v${extVersion}</span></h1>
   <p class="subtitle">Use Z.ai (智谱AI) models in VS Code Copilot Chat</p>
 
   <p>
@@ -201,12 +201,12 @@ function getWelcomeHtml(extVersion: string): string {
     <li>Click the Pick Model button (<code>Cmd/Ctrl + Alt + .</code>)</li>
     <li>Open <strong>Manage Language Models</strong> menu (⚙️)</li>
     <li>Click BytedeskCopilot models under <strong>BytedeskCopilot</strong> category to "Show in the chat model picker"</li>
-    <li>Choose a model (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5-Turbo, GLM-5V-Turbo, or GLM-5-Code)</li>
+    <li>Choose a model (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5.3-Flash, GLM-5-Turbo, GLM-5V-Turbo, or GLM-5-Code)</li>
   </ol>
 
   <div class="footer">
     <p>
-      <a href="https://github.com/Ryosuke-Asano/zai-provider-extension">GitHub</a> ·
+      <a href="https://github.com/pengjinning/bytedesk-copilot">GitHub</a> ·
       <a href="https://z.ai">Z.ai</a> ·
       <a href="https://open.bigmodel.cn/">Z.ai Platform</a>
     </p>
