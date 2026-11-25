@@ -416,6 +416,22 @@ describe("ZAI_MODELS", () => {
     expect(model?.supportsReasoningEffort).toBe(true);
   });
 
+  it("should have GLM-5.4 model", () => {
+    const model = ZAI_MODELS.find((m) => m.id === "glm-5.4");
+    expect(model).toBeDefined();
+    expect(model?.name).toBe("GLM-5.4");
+    expect(model?.displayName).toBe("GLM-5.4");
+    expect(model?.supportsTools).toBe(true);
+    // Z.ai docs: GLM-5.4 is multimodal (image/video/file input).
+    expect(model?.supportsVision).toBe(true);
+    // Z.ai docs: 1M context window, 128K max output tokens.
+    expect(model?.contextWindow).toBe(1000000);
+    expect(model?.maxOutput).toBe(131072);
+    // GLM-5.4 cannot disable thinking; disabled is remapped to low.
+    expect(model?.alwaysThinking).toBe(true);
+    expect(model?.supportsReasoningEffort).toBe(true);
+  });
+
   it("should all models have required fields", () => {
     ZAI_MODELS.forEach((model) => {
       expect(model.id).toBeDefined();

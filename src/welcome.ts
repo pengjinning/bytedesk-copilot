@@ -201,7 +201,7 @@ function getWelcomeHtml(extVersion: string): string {
     <li>Click the Pick Model button (<code>Cmd/Ctrl + Alt + .</code>)</li>
     <li>Open <strong>Manage Language Models</strong> menu (⚙️)</li>
     <li>Click BytedeskCopilot models under <strong>BytedeskCopilot</strong> category to "Show in the chat model picker"</li>
-    <li>Choose a model (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5.3-Flash, GLM-5-Turbo, GLM-5V-Turbo, or GLM-5-Code)</li>
+    <li>Choose a model (GLM-4.5, GLM-4.6, GLM-4.7, GLM-5, GLM-5.1, GLM-5.2, GLM-5.3, GLM-5.3-Flash, GLM-5.4, GLM-5-Turbo, GLM-5V-Turbo, or GLM-5-Code)</li>
   </ol>
 
   <div class="footer">

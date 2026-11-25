@@ -198,7 +198,7 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
 
   /**
    * Get the configured reasoning effort for models that support it
-   * (e.g. GLM-5.3). Returns undefined for "default", which omits the
+   * (e.g. GLM-5.3, GLM-5.4). Returns undefined for "default", which omits the
    * parameter so the server-side default applies.
    */
   private getReasoningEffort(): "low" | "high" | "max" | undefined {
@@ -565,8 +565,9 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
       const mo = options.modelOptions as Record<string, Json> | undefined;
       const maxTokensVal =
         typeof mo?.max_tokens === "number" ? mo.max_tokens : DEFAULT_MAX_TOKENS;
-      // Models that cannot disable thinking (GLM-5.3) recommend temperature 1.0
-      // per the official Z.ai docs; other models keep the historical 0.7 default.
+      // Models that cannot disable thinking (GLM-5.3, GLM-5.4) recommend
+      // temperature 1.0 per the official Z.ai docs; other models keep the
+      // historical 0.7 default.
       const temperatureVal =
         typeof mo?.temperature === "number"
           ? mo.temperature
@@ -618,8 +619,8 @@ export class ZaiChatModelProvider implements LanguageModelChatProvider {
       };
 
       // Enable thinking mode if the setting is enabled, or if the model
-      // cannot disable thinking (e.g. GLM-5.3 always thinks and rejects
-      // `thinking.type: "disabled"`).
+      // cannot disable thinking (e.g. GLM-5.3 rejects and GLM-5.4 remaps
+      // `thinking.type: "disabled"`), so we always send "enabled" instead.
       const alwaysThinks = effectiveModelInfo?.alwaysThinking === true;
       if (this.isThinkingEnabled() || alwaysThinks) {
         requestBody.thinking = {

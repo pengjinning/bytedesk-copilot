@@ -128,7 +128,8 @@ export interface ZaiModelInfo {
   internal?: boolean;
   /**
    * When true, the model always thinks and cannot disable thinking.
-   * The API rejects `thinking.type: "disabled"` for such models (e.g. GLM-5.3),
+   * The API rejects or remaps `thinking.type: "disabled"` for such models
+   * (e.g. GLM-5.3 rejects it; GLM-5.4 maps it to lightweight reasoning),
    * so we always send `thinking.type: "enabled"` regardless of user settings.
    */
   alwaysThinking?: boolean;
@@ -151,7 +152,7 @@ export interface ZaiRequestBody {
   temperature?: number;
   thinking?: { type: string };
   /**
-   * Reasoning effort level for models that support it (e.g. GLM-5.3).
+   * Reasoning effort level for models that support it (e.g. GLM-5.3, GLM-5.4).
    * `low` - lightweight reasoning; `high` - enhanced reasoning; `max` - deep reasoning.
    */
   reasoning_effort?: "low" | "high" | "max";
@@ -239,6 +240,21 @@ export const ZAI_MODELS: ZaiModelInfo[] = [
     maxOutput: 131072,
     supportsTools: true,
     supportsVision: false, // Text-only model
+  },
+  {
+    id: "glm-5.4",
+    name: "GLM-5.4",
+    displayName: "GLM-5.4",
+    // Z.ai docs: 1M context window, 128K max output tokens, native vision.
+    contextWindow: 1000000,
+    maxOutput: 131072,
+    supportsTools: true,
+    supportsVision: true, // Multimodal model (text/image/video/file input)
+    // GLM-5.4 always thinks: `thinking.type: "disabled"` is mapped to the
+    // lightest reasoning level server-side instead of turning thinking off.
+    alwaysThinking: true,
+    // GLM-5.4 supports three reasoning effort levels: low / high / max.
+    supportsReasoningEffort: true,
   },
   {
     id: "glm-5.3",

@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - GLM-5.3-Flash model support with a 1M context window, 128K max output, native vision, always-on thinking, and configurable reasoning effort
+- **GLM-5.4 model support**: Z.ai's latest flagship model built on the Loop Transformer architecture
+  - 1M context window, 128K max output tokens, native multimodal input (image/video/file alongside text)
+  - Always-on thinking: `thinking.type: "disabled"` is remapped server-side to lightweight reasoning, so the provider always sends `thinking.type: "enabled"`
+  - Configurable `reasoning_effort` (`low` / `high` / `max`, server default `max`) via the existing `bytedesk-copilot.reasoningEffort` setting and per-request model options
+  - Temperature defaults to `1.0` per official Z.ai recommendation for always-thinking models
 
 ## [0.11.0] - 2026-08-21
 
